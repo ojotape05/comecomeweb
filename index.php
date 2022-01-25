@@ -5,10 +5,10 @@ include_once 'header.php';
 
 <?php
 	// conexao com bd;
-	require_once 'bd_conectar.php';
+	//require_once 'bd_conectar.php';
 
 	// iniciar sessão
-	session_start();
+	//session_start();
 
 	// botao enviar
 	if(isset($_POST['logar'])): //chegando se o usuário clicou em Enviar
