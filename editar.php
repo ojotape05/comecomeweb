@@ -1,5 +1,5 @@
 <?php
-include_once 'includes/header.php';
+include_once 'header.php';
 
 // iniciar sessão
 session_start();
@@ -12,17 +12,15 @@ if(!isset($_SESSION['logado'])):
 	header('Location: index.php');
 endif;
 
-
 $id = $_SESSION['id_usuario'];
 $sql = "SELECT * FROM usuario WHERE codusu = '$id'";
-$resultado = mysqli_query($connect, $sql);
-$dados = mysqli_fetch_assoc($resultado);
-
+$resultado = pg_query($connect, $sql);
+$dados = pg_fetch_assoc($resultado);
 
 if(!empty( $_GET['id_receita'])):
 	$id_receita = $_GET['id_receita'];
-	$resultado = mysqli_query($connect,"SELECT * FROM receita WHERE codreceita = '$id_receita'");
-	$dados_receita = mysqli_fetch_assoc($resultado);
+	$resultado = pg_query($connect,"SELECT * FROM receita WHERE codreceita = '$id_receita'");
+	$dados_receita = pg_fetch_assoc($resultado);
 else:
 	header("Location: home.php");
 endif;
@@ -140,13 +138,13 @@ endif;
 								while($n<5):
 									if(!empty($valores[$n])):
 										$sql = "UPDATE receita SET $colunasEditaveis[$n] = '$valores[$n]' WHERE codreceita = '$id_receita'";
-										$resultado = mysqli_query($connect,$sql);
+										$resultado = pg_query($connect,$sql);
 									endif;
 									$n = $n + 1;
 									
 								endwhile;
 								header("Location: receita.php?id_receita=$id_receita");
-								mysqli_close($connect);
+								pg_close($connect);
 								
 							else:
 								$erros[] = "<script>alert('Erro, não foi possível fazer o upload');</script>";
@@ -198,12 +196,12 @@ endif;
 						while($n<4):
 							if($valores[$n]!= null):
 								$sql = "UPDATE receita SET $colunasEditaveis[$n] = '$valores[$n]' WHERE codreceita = '$id_receita'";
-								$resultado = mysqli_query($connect,$sql);
+								$resultado = pg_query($connect,$sql);
 							endif;
 							$n = $n +1;
 						endwhile;
 						header("Location: receita.php?id_receita=$id_receita");
-						mysqli_close($connect);
+						pg_close($connect);
 					endif;
 				endif;
 			?>
@@ -225,5 +223,5 @@ endif;
 
 
 <?php
-include_once 'includes/footer.php';
+include_once 'footer.php';
 ?>
