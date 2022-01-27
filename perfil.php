@@ -1,5 +1,5 @@
 <?php
-include_once 'includes/header.php';
+include_once 'header.php';
 ?>
 
 <?php
@@ -17,15 +17,15 @@ endif;
 
 $id = $_SESSION['id_usuario'];
 $sql = "SELECT * FROM usuario WHERE codusu = $id";
-$resultado = mysqli_query($connect,$sql);
-$dados = mysqli_fetch_assoc($resultado);
+$resultado = pg_query($connect,$sql);
+$dados = pg_fetch_assoc($resultado);
 
 // dados usuário
 if(!empty( $_GET['id_usuario'])):
 	$id_usuario = $_GET['id_usuario'];
 	$sql = "SELECT * FROM usuario WHERE codusu = '$id_usuario'";
-	$resultado = mysqli_query($connect, $sql);
-	$dados = mysqli_fetch_assoc($resultado);
+	$resultado = pg_query($connect, $sql);
+	$dados = pg_fetch_assoc($resultado);
 else:
 	header('Location: home.php');
 endif;
@@ -53,21 +53,15 @@ endif;
 					<h3 class='texto'> <?php echo $dados['nome']; ?></h3>
 					<h5 class='texto'>
 						<?php 
-							$sql = "SELECT seguido FROM seguidos WHERE seguido = '$id_usuario'";
-							$resultado = mysqli_query($connect, $sql);
-							$seguidores = Array();
-							while ($row = mysqli_fetch_assoc($resultado)):
-									$seguidores[] = $row['seguido'];
-							endwhile;
-							echo "Seguidores: ".count($seguidores);
+							$sql = "SELECT COUNT(*) AS seguidores FROM seguidos WHERE seguido = '$id_usuario'";
+							$resultado = pg_query($connect, $sql);
+							$num_seguidores = pg_fetch_assoc($resultado);
+							echo "Seguidores: ".$num_seguidores['seguidores'];
 							
-							$sql = "SELECT codreceita FROM receita WHERE autor = '$id_usuario'";
-							$resultado = mysqli_query($connect, $sql);
-							$receitas = Array();
-							while ($row = mysqli_fetch_assoc($resultado)):
-								$receitas[] = $row['codreceita'];
-							endwhile;
-							echo " Receitas: ".count($receitas)."</div>";
+							$sql = "SELECT COUNT(*) AS receitas FROM receita WHERE autor = '$id_usuario'";
+							$resultado = pg_query($connect, $sql);
+							$num_receitas = pg_fetch_assoc($resultado);
+							echo " Receitas: ".$num_receitas['receitas']."</div>";
 						?>
 				</h5>
 				<?php
@@ -84,8 +78,8 @@ endif;
 					if(!$meuperfil):
 					
 						$sql = "SELECT seguido FROM seguidos WHERE seguindo = $id";
-						$resultado = mysqli_query($connect, $sql);
-						$seguido = mysqli_fetch_assoc($resultado);
+						$resultado = pg_query($connect, $sql);
+						$seguido = pg_fetch_assoc($resultado);
 						$seguido = $seguido['seguido'];
 					
 						if($seguido != $id_usuario):
@@ -98,7 +92,7 @@ endif;
 							if(isset($_GET['seguir'])):
 								
 								$sql = "INSERT INTO seguidos(seguindo, seguido) values ('$id','$id_usuario')";
-								$resultado = mysqli_query($connect, $sql);
+								$resultado = pg_query($connect, $sql);
 								
 							endif;
 						else:
@@ -123,9 +117,9 @@ endif;
 				<tr>
 				<?php
 					$sql = "SELECT codreceita FROM receita WHERE autor = '$id_usuario' ORDER BY `receita`.`data` DESC";
-					$resultado = mysqli_query($connect, $sql);
+					$resultado = pg_query($connect, $sql);
 					$receitas = Array();
-					while ($row = mysqli_fetch_assoc($resultado)):
+					while ($row = pg_fetch_assoc($resultado)):
 						$receitas[] = $row['codreceita'];
 					endwhile;
 					$n = 0;
@@ -135,8 +129,8 @@ endif;
 							
 							// selecionando os dados da receita
 							$sql = "SELECT * FROM receita WHERE codreceita = '$receita'";
-							$resultado = mysqli_query($connect, $sql);
-							$dados_receita = mysqli_fetch_assoc($resultado);
+							$resultado = pg_query($connect, $sql);
+							$dados_receita = pg_fetch_assoc($resultado);
 							
 							$id_receita = $dados_receita['codreceita'];
 							$imagem_receita = $dados_receita['imagem'];
@@ -162,9 +156,9 @@ endif;
 				<tr>
 				<?php
 					$sql = "SELECT codreceita FROM favorito WHERE codusu = '$id_usuario'";
-					$resultado = mysqli_query($connect, $sql);
+					$resultado = pg_query($connect, $sql);
 					$receitasFav = Array();
-					while ($rowFav = mysqli_fetch_assoc($resultado)):
+					while ($rowFav = pg_fetch_assoc($resultado)):
 						$receitasFav[] = $rowFav['codreceita'];
 					endwhile;
 				
@@ -175,8 +169,8 @@ endif;
 							
 							// selecionando os dados da receita
 							$sql = "SELECT * FROM receita WHERE codreceita = '$receita'";
-							$resultado = mysqli_query($connect, $sql);
-							$dados_receita = mysqli_fetch_assoc($resultado);
+							$resultado = pg_query($connect, $sql);
+							$dados_receita = pg_fetch_assoc($resultado);
 							
 							$id_receita = $dados_receita['codreceita'];
 							$imagem_receita = $dados_receita['imagem'];
@@ -197,5 +191,5 @@ endif;
 		
 	</main>
 <?php
-include_once 'includes/footer.php';
+include_once 'footer.php';
 ?>
