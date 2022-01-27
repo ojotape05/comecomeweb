@@ -125,7 +125,7 @@ $dados = pg_fetch_assoc($resultado);
 								$lastid = $insert_row[0];
 								$_SESSION['id_receita'] = $lastid;
 								pg_close($connect);
-								header("Location: receita.php");
+								header("Location: receita.php?id_receita=$lastid");
 							else:
 								$erros[] = "<script>alert('Erro, não foi possível inserir no banco de dados');</script>";
 							endif;
