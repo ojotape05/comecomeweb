@@ -18,7 +18,7 @@ endif;
 $id = $_SESSION['id_usuario'];
 $sql = "SELECT * FROM usuario WHERE codusu = $id";
 $resultado = pg_query($connect,$sql);
-$dados = pg_fetch_assoc($resultado);
+$dados_logado = pg_fetch_assoc($resultado);
 
 // dados usuário
 if(!empty( $_GET['id_usuario'])):
@@ -38,7 +38,7 @@ endif;
 		<div class="nav-wrapper container"><a id="logo-container" href="home.php" class="brand-logo left">ComeCome</a>
 		  <ul class="right">
 			<li><a href="post.php" class="btn-floating #f57f17 yellow darken-4"> <i class= "material-icons"> add_circle </i> </a> </li>
-			<li><a href="perfil.php?id_usuario=<?php $meuperfil = true; echo $id.'&meuperfil='.$meuperfil;?>" class="btn-floating"> <img class="circle z-depth-2" height='50px' width='50px' src="<?php echo $dados['imagem']; ?>"> </a> </li>
+			<li><a href="perfil.php?id_usuario=<?php $meuperfil = true; echo $id.'&meuperfil='.$meuperfil;?>" class="btn-floating"> <img class="circle z-depth-2" height='50px' width='50px' src="<?php echo $dados_logado['imagem']; ?>"> </a> </li>
 			<li><a href="logout.php" class="btn-floating #f57f17 yellow darken-4"> <i class= "material-icons"> stop </i> </a> </li>
 		  </ul>
 		</div>
