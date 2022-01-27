@@ -138,7 +138,7 @@ endif;
 									while($n<4):
 										if(!empty($valores[$n])):
 											$sql = "UPDATE usuario SET $colunasEditaveis[$n] = '$valores[$n]' WHERE codusu = '$id_usuario'";
-											 pg_query($connect,$sql);
+											$alteracoes = pg_query($connect,$sql);
 										endif;
 										$n = $n + 1;
 									endwhile;
@@ -152,7 +152,7 @@ endif;
 								while($n<3):
 									if(!empty($valores[$n])):
 										$sql = "UPDATE usuario SET $colunasEditaveis[$n] = '$valores[$n]' WHERE codusu = '$id_usuario'";
-										 pg_query($connect,$sql);
+										$alteracoes = pg_query($connect,$sql);
 									endif;
 									$n = $n + 1;
 								endwhile;
@@ -188,7 +188,7 @@ endif;
 								while($n<3):
 									if(!empty($valores[$n])):
 										$sql = "UPDATE usuario SET $colunasEditaveis[$n] = '$valores[$n]' WHERE codusu = '$id_usuario'";
-										 pg_query($connect,$sql);
+										$alteracoes = pg_query($connect,$sql);
 									endif;
 									$n = $n + 1;
 								endwhile;
@@ -202,7 +202,7 @@ endif;
 							while($n<2):
 								if(!empty($valores[$n])):
 									$sql = "UPDATE usuario SET $colunasEditaveis[$n] = '$valores[$n]' WHERE codusu = '$id_usuario'";
-									 pg_query($connect,$sql);
+									$alteracoes = pg_query($connect,$sql);
 								endif;
 								$n = $n + 1;
 							endwhile;
