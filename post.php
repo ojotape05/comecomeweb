@@ -1,5 +1,5 @@
 <?php
-include_once 'includes/header.php';
+include_once 'header.php';
 ?>
 
 <?php
@@ -17,8 +17,8 @@ endif;
 
 $id = $_SESSION['id_usuario'];
 $sql = "SELECT * FROM usuario WHERE codusu = '$id'";
-$resultado = mysqli_query($connect, $sql);
-$dados = mysqli_fetch_assoc($resultado);
+$resultado = pg_query($connect, $sql);
+$dados = pg_fetch_assoc($resultado);
 ?>
 
 <body>
@@ -123,11 +123,11 @@ $dados = mysqli_fetch_assoc($resultado);
 							else:
 								$id_usuario = $_SESSION['id_usuario'];
 								$sql = "INSERT INTO receita (nomerec,preparo,sobre,ingrediente,autor,imagem) VALUES ('$nome','$preparo','$desc','$ingredientes','$id_usuario','$novoNome')";
-								$resultado = mysqli_query($connect,$sql);
+								$resultado = pg_query($connect,$sql);
 								if ($resultado):
 									$_SESSION['post'] = true; 
-									$_SESSION['id_receita'] = mysqli_insert_id($connect);
-									mysqli_close($connect);
+									$_SESSION['id_receita'] = pg_last_oid($connect);
+									pg_close($connect);
 									header("Location: receita.php");
 								else:
 									$erros[] = "<script>alert('Erro, não foi possível inserir no banco de dados');</script>";
@@ -176,5 +176,5 @@ $dados = mysqli_fetch_assoc($resultado);
 
 
 <?php
-include_once 'includes/footer.php';
+include_once 'footer.php';
 ?>
