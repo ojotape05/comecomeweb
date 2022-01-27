@@ -10,57 +10,37 @@ include_once 'header.php';
 
 	if(isset($_POST['cadastrar'])): //chegando se o usuário clicou em Enviar
 		$erros = Array();
-		$formatosPermitidos = array("png", "jpeg", "jpg", "PNG", "JPEG", "JPG");
-		$extensao = pathinfo($_FILES['imagem']['name'],PATHINFO_EXTENSION);
+		$formatosPermitidos = array("png", "jpeg", "jpg");
+		$extensao = strtolower(pathinfo($_FILES['imagem']['name'],PATHINFO_EXTENSION));
 
 		if(in_array($extensao, $formatosPermitidos)):
-			$pasta = "fotosperfil/"; // criando a variavel do caminho para fazer o upload do arqv
-			$temporario = $_FILES['imagem']['tmp_name']; //selecionando o nome temporario do arqv;
-			$novoNome = uniqid().'.'.$extensao; //transformando o nome do arqv em um nome unico; organização
+			$imagembase64 = base64_encode(file_get_contents($_FILES['imagem']['tmp_name'])); //selecionando o nome temporario do arqv;
+			$imagem = 'data:imagem/'.$extensao.';base64,'.$imagembase64;
+			$nome =  filter_input(INPUT_POST,'nome',FILTER_SANITIZE_SPECIAL_CHARS);
+			$descricao =  filter_input(INPUT_POST,'descricao',FILTER_SANITIZE_SPECIAL_CHARS);
+			$login = filter_input(INPUT_POST,'email',FILTER_SANITIZE_EMAIL);
+			$senha = pg_escape_string($connect, md5($_POST['senha']));
 			
-			if(move_uploaded_file($temporario, $pasta.$novoNome)): /*retorna true caso o arqv temporario consiga
-			ir para o destino; altera o nome do arquivo*/
+			if(empty($login) or empty($senha) or empty($nome)):
+				$erros[] = "<script>alert('Os campos Nome, Login e Senha são obrigatórios');</script>";
+			else:
+				$sql = "SELECT * FROM usuario WHERE email = '$login'";
+				$resultado = pg_query($connect, $sql);
 
-				
-				$nome =  filter_input(INPUT_POST,'nome',FILTER_SANITIZE_SPECIAL_CHARS);
-				$descricao =  filter_input(INPUT_POST,'descricao',FILTER_SANITIZE_SPECIAL_CHARS);
-				$login = filter_input(INPUT_POST,'email',FILTER_SANITIZE_EMAIL);
-				$senha = pg_escape_string($connect, md5($_POST['senha']));
-				
-				if(empty($login) or empty($senha) or empty($nome)):
-					$erros[] = "<script>alert('Os campos Nome, Login e Senha são obrigatórios');</script>";
+				if(pg_num_rows($resultado) == 1):
+					$erros[] = "<script>alert('O login $login já está cadastrado');</script>";
 				else:
-					$sql = "SELECT * FROM usuario WHERE email = '$login'";
-					$resultado = pg_query($connect, $sql);
-
-					if(pg_num_rows($resultado) == 1):
-						$erros[] = "<script>alert('O login $login já está cadastrado');</script>";
-					else:
-						if(empty($descricao)):
-							$sql = "INSERT INTO usuario (nome, email,senha,imagem) VALUES ('$nome','$login','$senha','$novoNome')";
-							$resultado = pg_query($connect,$sql);
-							if ($resultado):
-								$_SESSION['logado'] = true;
-								$_SESSION['id_usuario'] = pg_last_oid($connect);
-								pg_close();
-								header('Location: home.php');
-							else:
-								"<script>alert('Não foi possível inserir as informações ao banco de dados');</script>";
-							endif;
-						else:
-							$sql = "INSERT INTO usuario (nome, email,senha,imagem,sobre) VALUES ('$nome','$login','$senha','$novoNome','$descricao')";
-							$resultado = pg_query($connect,$sql);
-							if ($resultado):
-								$_SESSION['logado'] = true;
-								$_SESSION['id_usuario'] = pg_last_oid($connect);
-								pg_close();
-								header('Location: home.php');
-							endif;
-						endif;
+					$sql = "INSERT INTO usuario (nome, email,senha,imagem,sobre) VALUES ('$nome','$login','$senha','$imagem','$descricao') RETURNING codusu";
+					$resultado = pg_query($connect,$sql);
+					if ($resultado):
+						$_SESSION['logado'] = true;
+						$insert_row = pg_fetch_row($resultado);
+						$lastid = $insert_row[0];
+						$_SESSION['id_usuario'] = $lastid;
+						pg_close();
+						header('Location: home.php');
 					endif;
 				endif;
-			else:
-				$erros[] = "<script>alert('Erro de upload de imagem');</script>";
 			endif;
 		else:
 			$erros[] = "<script>alert('Imagem com formato não suportado ou vazia');</script>";
