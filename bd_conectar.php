@@ -1,13 +1,7 @@
 <?php
-// Conexão com banco de dados
-$servername = "localhost";
-$username = "root";
-$password = "usbw";
-$bd_name = "bd_comecome";
+	$connect = pg_connect("dbname=d1t7aqnqu21atk host=ec2-44-193-112-245.compute-1.amazonaws.com port=5432 user=gskexnztmsgotj password=f9afbb6a89c845ff5cd5f2e50f0e47a8f92bee24012f16b80b77f5a18d10feb6 sslmode=require");
 
-$connect = mysqli_connect($servername, $username, $password, $bd_name);
-
-if(mysqli_connect_error()):
-	echo "Falha na conexão: ".mysqli_connect_error();
-endif;
+	if (!$connect):
+		echo "Falha na Conexão: ".pg_last_error();
+	endif;
 ?>
