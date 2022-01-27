@@ -15,9 +15,9 @@
 	if(!empty($_GET['id_receita'])):
 		$id_receita = $_GET['id_receita'];
 		$sql = "DELETE FROM receita WHERE codreceita = '$id_receita'";
-		$resultado = mysqli_query($connect,$sql);
+		$resultado = pg_query($connect,$sql);
 		
-		mysqli_close($connect);
+		pg_close($connect);
 	else:
 		header("Location: home.php");
 	endif;
