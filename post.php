@@ -117,12 +117,14 @@ $dados = pg_fetch_assoc($resultado);
 							$erros[] = "<script>alert('Todos os campos precisam ser preenchidos');</script>";
 						else:
 							$id_usuario = $_SESSION['id_usuario'];
-							$sql = "INSERT INTO receita (nomerec,preparo,sobre,ingrediente,autor,imagem) VALUES ('$nome','$preparo','$desc','$ingredientes','$id_usuario','$imagem')";
+							$sql = "INSERT INTO receita (nomerec,preparo,sobre,ingrediente,autor,imagem) VALUES ('$nome','$preparo','$desc','$ingredientes','$id_usuario','$imagem') RETURNING codreceita";
 							$resultado = pg_query($connect,$sql);
 							if ($resultado):
-								$_SESSION['post'] = true; 
+								$_SESSION['post'] = true;
+								$insert_row = pg_fetch_row($resultado);
+								$lastid = $insert_row[0];
 								pg_close($connect);
-								header("Location: home.php");
+								header("Location: receita.php?id_receita=$lastid");
 							else:
 								$erros[] = "<script>alert('Erro, não foi possível inserir no banco de dados');</script>";
 							endif;
