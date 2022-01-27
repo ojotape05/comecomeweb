@@ -158,7 +158,6 @@ endif;
 								endwhile;
 							endif;
 							
-							header("Location: perfil.php?id_usuario=$id_usuario&meuperfil=1");
 							pg_close($connect);
 
 						else:
@@ -208,8 +207,6 @@ endif;
 								$n = $n + 1;
 							endwhile;
 						endif;
-							
-						header("Location: perfil.php?id_usuario=$id_usuario&meuperfil=1");
 						pg_close($connect);
 					endif;
 				endif;
