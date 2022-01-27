@@ -128,7 +128,7 @@ endif;
 							endif;
 
 							$n=0;
-							$valores = [$nome,$preparo,$novoNome,$desc,$ingredientes];
+							$valores = [$nome,$preparo,$imagem,$desc,$ingredientes];
 							$colunasEditaveis = ['nomerec','preparo','imagem','sobre','ingrediente'];
 							while($n<5):
 								if(!empty($valores[$n])):
