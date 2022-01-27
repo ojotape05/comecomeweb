@@ -18,9 +18,9 @@
 		$id_receita = $_GET['id_receita'];
 		
 		$sql = "SELECT codreceita FROM favorito WHERE codusu = $id_usuario";
-		$resultado = mysqli_query($connect,$sql);
+		$resultado = pg_query($connect,$sql);
 		
-		while ($row = mysqli_fetch_assoc($resultado)):
+		while ($row = pg_fetch_assoc($resultado)):
 			$codreceita = $row['codreceita'];
 			if($codreceita == $id_receita):
 				$fav = 1; //se fav tiver valor, quer dizer q o usu ja fav a receita.
@@ -30,7 +30,7 @@
 		
 		if(empty($fav)):
 			$sql = "INSERT INTO favorito (codreceita,codusu) VALUES ($id_receita,$id_usuario)";
-			mysqli_query($connect,$sql);
+			pg_query($connect,$sql);
 			header("Location: receita.php?id_receita=$id_receita");
 		endif;
 		
