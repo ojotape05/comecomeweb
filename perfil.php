@@ -113,10 +113,10 @@ endif;
 							endif;
 						else:
 							$server = $_SERVER['PHP_SELF'];
-							echo "<form id='unfollow' action='$server' method='GET'>
+							echo "<form id='seguir' action='$server' method='GET'>
 								<input type='hidden' name='id_usuario'value='$id_usuario'>
 								<input type='hidden' name='meuperfil' value=''>
-								<button type='submit' name='seguir'> SEGUIR </button>
+								<button type='submit' name='unfollow'> DEIXAR DE SEGUIR </button>
 								</form>";
 							if(isset($_GET['unfollow'])):
 								
