@@ -15,25 +15,25 @@ include_once 'header.php';
 		$erros = Array();
 		
 		$login = filter_input(INPUT_POST,'email',FILTER_SANITIZE_EMAIL);
-		$senha = mysqli_escape_string($connect, $_POST['senha']);
+		$senha = pg_escape_string($connect, $_POST['senha']);
 		
 		if(empty($login) or empty($senha)):
 			$erros[] = "<script>alert('O campo login/senha precisa ser preenchido');</script>";
 		else:
 			$sql = "SELECT email FROM usuario WHERE email = '$login'";
-			$resultado = mysqli_query($connect, $sql);
+			$resultado = pg_query($connect, $sql);
 			
-			if(mysqli_num_rows($resultado) > 0):
+			if(pg_num_rows($resultado) > 0):
 				
 				$senha = md5($senha);
 				$sql = "SELECT * FROM usuario WHERE email = '$login' AND senha = '$senha'";
-				$resultado = mysqli_query($connect,$sql);
+				$resultado = pg_query($connect,$sql);
 				
-				if (mysqli_num_rows($resultado) == 1):
-					$dados = mysqli_fetch_assoc($resultado); //transformando o resultado sql em um array para $dados
-					mysqli_close();
+				if (pg_num_rows($resultado) == 1):
+					$dados = pg_fetch_assoc($resultado); //transformando o resultado sql em um array para $dados
+					pg_close();
 					$_SESSION['logado'] = true;
-					$_SESSION['id_usuario'] = $dados['CodigoUsu'];
+					$_SESSION['id_usuario'] = $dados['codusu'];
 					header('Location: home.php');
 				else:
 					$erros[] = "<script>alert('Usuário e senha não conferem');</script>";
