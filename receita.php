@@ -1,5 +1,5 @@
 <?php
-include_once 'includes/header.php';
+include_once 'header.php';
 ?>
 
 <?php
@@ -18,20 +18,20 @@ endif;
 // dados usuário
 $id_usuario = $_SESSION['id_usuario'];
 $sql = "SELECT * FROM usuario WHERE codusu = '$id_usuario'";
-$resultado = mysqli_query($connect, $sql);
-$dados = mysqli_fetch_assoc($resultado);
+$resultado = pg_query($connect, $sql);
+$dados = pg_fetch_assoc($resultado);
 
 // dados receita
 if ($_SESSION['post']):
 	$id_receita = $_SESSION['id_receita'];
 	$sql = "SELECT * FROM receita WHERE codreceita = '$id_receita'";
-	$resultado = mysqli_query($connect, $sql);
-	$dados_receita =mysqli_fetch_assoc($resultado);
+	$resultado = pg_query($connect, $sql);
+	$dados_receita =pg_fetch_assoc($resultado);
 else:
 	$id_receita = $_GET['id_receita'];
 	$sql = "SELECT * FROM receita WHERE codreceita = '$id_receita'";
-	$resultado = mysqli_query($connect, $sql);
-	$dados_receita = mysqli_fetch_assoc($resultado);
+	$resultado = pg_query($connect, $sql);
+	$dados_receita = pg_fetch_assoc($resultado);
 endif;
 ?>
 
@@ -42,7 +42,7 @@ endif;
 		<div class="nav-wrapper container"><a id="logo-container" href="home.php" class="brand-logo left">ComeCome</a>
 		  <ul class="right">
 			<li><a href="post.php" class="btn-floating #f57f17 yellow darken-4"> <i class= "material-icons"> add_circle </i> </a> </li>
-			<li><a href="perfil.php?id_usuario=<?php $meuperfil = true; echo $id.'&meuperfil='.$meuperfil;?>" class="btn-floating"> <img class="circle z-depth-2" height='50px' width='50px' src="fotosperfil/<?php echo $dados['imagem']; ?>"> </a> </li>
+			<li><a href="perfil.php?id_usuario=<?php $meuperfil = true; echo $id_usuario.'&meuperfil='.$meuperfil;?>" class="btn-floating"> <img class="circle z-depth-2" height='50px' width='50px' src="fotosperfil/<?php echo $dados['imagem']; ?>"> </a> </li>
 			<li><a href="logout.php" class="btn-floating #f57f17 yellow darken-4"> <i class= "material-icons"> stop </i> </a> </li>
 		  </ul>
 		</div>
@@ -60,8 +60,8 @@ endif;
 			$servidor = $_SERVER['PHP_SELF'];
 			
 			$sql = "SELECT autor FROM receita WHERE codreceita = '$id_receita'";
-			$resultado = mysqli_query($connect, $sql);
-			$array = mysqli_fetch_assoc($resultado);
+			$resultado = pg_query($connect, $sql);
+			$array = pg_fetch_assoc($resultado);
 			$id_donodareceita = $array['autor'];
 			
 			if($id_usuario == $id_donodareceita ):
@@ -73,9 +73,9 @@ endif;
 					</div>";
 			else:
 				$sql = "SELECT codreceita FROM favorito WHERE codreceita = $id_receita";
-				$resultado = mysqli_query($connect, $sql);
+				$resultado = pg_query($connect, $sql);
 				$receita = Array();
-				while ($row = mysqli_fetch_assoc($resultado)):
+				while ($row = pg_fetch_assoc($resultado)):
 					$receita[] = $row['codreceita'];
 				endwhile;
 				
@@ -121,5 +121,5 @@ endif;
 
 
 <?php
-include_once 'includes/footer.php';
+include_once 'footer.php';
 ?>
