@@ -37,7 +37,7 @@ $dados = pg_fetch_assoc($resultado);
 		<div class="row container z-depth-2">
 			<form class="col s12" action= "<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" enctype="multipart/form-data">
 				<?php
-					if($resultado):
+					if($postagem):
 						echo "<script> alert('Receita enviada com sucesso!') </script>";
 					endif;?>
 				<h1 align="center"> Postar Receita </h1>
@@ -122,11 +122,9 @@ $dados = pg_fetch_assoc($resultado);
 						else:
 							$id_usuario = $_SESSION['id_usuario'];
 							$sql = "INSERT INTO receita (nomerec,preparo,sobre,ingrediente,autor,imagem) VALUES ('$nome','$preparo','$desc','$ingredientes','$id_usuario','$imagem') RETURNING codreceita";
-							$resultado = pg_query($connect,$sql);
-							if ($resultado):
+							$postagem = pg_query($connect,$sql);
+							if ($postagem):
 								$_SESSION['post'] = true; 
-								$insert_row = pg_fetch_row($resultado);
-								$lastid = $insert_row[0];
 								pg_close($connect);
 							else:
 								$erros[] = "<script>alert('Erro, não foi possível inserir no banco de dados');</script>";
