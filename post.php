@@ -117,7 +117,7 @@ $dados = pg_fetch_assoc($resultado);
 							$erros[] = "<script>alert('Todos os campos precisam ser preenchidos');</script>";
 						else:
 							$id_usuario = $_SESSION['id_usuario'];
-							$sql = "INSERT INTO receita (nomerec,preparo,sobre,ingrediente,autor,imagem) VALUES ('$nome','$preparo','$desc','$ingredientes','$id_usuario','$novoNome')";
+							$sql = "INSERT INTO receita (nomerec,preparo,sobre,ingrediente,autor,imagem) VALUES ('$nome','$preparo','$desc','$ingredientes','$id_usuario','$imagem')";
 							$resultado = pg_query($connect,$sql);
 							if ($resultado):
 								$_SESSION['post'] = true; 
