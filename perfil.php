@@ -106,11 +106,26 @@ endif;
 							if(isset($_GET['seguir'])):
 								
 								$sql = "INSERT INTO seguidos(seguindo, seguido) values ('$id','$id_usuario')";
-								$resultado = pg_query($connect, $sql);
-								
+								$validacao = pg_query($connect, $sql);
+								if($validacao):
+									echo "<script>alert('Você agora segue esse perfil')</script>";
+								endif;
 							endif;
 						else:
-							echo "<div id='seguir'><button> SEGUINDO </button></div>";
+							$server = $_SERVER['PHP_SELF'];
+							echo "<form id='unfollow' action='$server' method='GET'>
+								<input type='hidden' name='id_usuario'value='$id_usuario'>
+								<input type='hidden' name='meuperfil' value=''>
+								<button type='submit' name='seguir'> SEGUIR </button>
+								</form>";
+							if(isset($_GET['unfollow'])):
+								
+								$sql = "DELETE FROM seguidos WHERE seguindo = $id AND seguido = $id_usuario;
+								$validacao = pg_query($connect, $sql);
+								if($validacao):
+									echo "<script>alert('Você deixou de seguir esse perfil')</script>";
+								endif;
+							endif;
 						endif;
 					endif;
 				?>	
