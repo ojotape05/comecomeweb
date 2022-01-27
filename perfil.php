@@ -38,7 +38,7 @@ endif;
 		<div class="nav-wrapper container"><a id="logo-container" href="home.php" class="brand-logo left">ComeCome</a>
 		  <ul class="right">
 			<li><a href="post.php" class="btn-floating #f57f17 yellow darken-4"> <i class= "material-icons"> add_circle </i> </a> </li>
-			<li><a href="perfil.php?id_usuario=<?php $meuperfil = true; echo $id.'&meuperfil='.$meuperfil;?>" class="btn-floating"> <img class="circle z-depth-2" height='50px' width='50px' src="fotosperfil/<?php echo $dados['imagem']; ?>"> </a> </li>
+			<li><a href="perfil.php?id_usuario=<?php $meuperfil = true; echo $id.'&meuperfil='.$meuperfil;?>" class="btn-floating"> <img class="circle z-depth-2" height='50px' width='50px' src="<?php echo $dados['imagem']; ?>"> </a> </li>
 			<li><a href="logout.php" class="btn-floating #f57f17 yellow darken-4"> <i class= "material-icons"> stop </i> </a> </li>
 		  </ul>
 		</div>
@@ -47,9 +47,23 @@ endif;
 	
 	<main>	
 		<div name="conteudo" class="container row">
+		
+			<?php
+			$meuperfil = $_GET['meuperfil'];
+			if($meuperfil):
+				echo "<div class='fotonome'>
+						<ul>
+							<a href='editarperfil.php?id_usuario=$id_usuario' class='btn-floating #f57f17 yellow darken-4'> <i class= 'material-icons'> create </i> </a>
+							<a href='deleteperfil.php?id_usuario=$id_usuario' class='btn-floating red'> <i class= 'material-icons'> delete </i> </a>
+						</ul>
+					</div>";
+			endif;
+			
+			?>
+		
 			<div id="perfilarea" class='col s12 #fbc02d yellow darken-2 z-depth-2'>
 				<div class="white-text fotonome">
-					<img class="circle z-depth-2" height='300px' width='300px' src="fotosperfil/<?php echo $dados['imagem']; ?>">
+					<img class="circle z-depth-2" height='300px' width='300px' src="<?php echo $dados['imagem']; ?>">
 					<h3 class='texto'> <?php echo $dados['nome']; ?></h3>
 					<h5 class='texto'>
 						<?php 
@@ -116,7 +130,7 @@ endif;
 				<table>
 				<tr>
 				<?php
-					$sql = "SELECT codreceita FROM receita WHERE autor = '$id_usuario' ORDER BY `receita`.`data` DESC";
+					$sql = "SELECT codreceita FROM receita WHERE autor = '$id_usuario'";
 					$resultado = pg_query($connect, $sql);
 					$receitas = Array();
 					while ($row = pg_fetch_assoc($resultado)):
@@ -135,7 +149,7 @@ endif;
 							$id_receita = $dados_receita['codreceita'];
 							$imagem_receita = $dados_receita['imagem'];
 							
-							echo "<td> <a href='receita.php?id_receita=$id_receita'><img class='minhasreceitas' src='arquivos/$imagem_receita'></a></td>";
+							echo "<td> <a href='receita.php?id_receita=$id_receita'><img class='minhasreceitas' src='$imagem_receita'></a></td>";
 							$n = $n + 1;
 						endwhile;
 					else:
@@ -175,7 +189,7 @@ endif;
 							$id_receita = $dados_receita['codreceita'];
 							$imagem_receita = $dados_receita['imagem'];
 							
-							echo "<td> <a href='receita.php?id_receita=$id_receita'><img class='minhasreceitas' src='arquivos/$imagem_receita'></a></td>";
+							echo "<td> <a href='receita.php?id_receita=$id_receita'><img class='minhasreceitas' src='$imagem_receita'></a></td>";
 							$n = $n + 1;
 						endwhile;
 					else:
