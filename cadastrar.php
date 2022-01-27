@@ -1,5 +1,5 @@
 <?php
-include_once 'includes/header.php';
+include_once 'header.php';
 ?>
 
 <?php
@@ -25,35 +25,35 @@ include_once 'includes/header.php';
 				$nome =  filter_input(INPUT_POST,'nome',FILTER_SANITIZE_SPECIAL_CHARS);
 				$descricao =  filter_input(INPUT_POST,'descricao',FILTER_SANITIZE_SPECIAL_CHARS);
 				$login = filter_input(INPUT_POST,'email',FILTER_SANITIZE_EMAIL);
-				$senha = mysqli_real_escape_string($connect, md5($_POST['senha']));
+				$senha = pg_escape_string($connect, md5($_POST['senha']));
 				
 				if(empty($login) or empty($senha) or empty($nome)):
 					$erros[] = "<script>alert('Os campos Nome, Login e Senha são obrigatórios');</script>";
 				else:
 					$sql = "SELECT * FROM usuario WHERE email = '$login'";
-					$resultado = mysqli_query($connect, $sql);
+					$resultado = pg_query($connect, $sql);
 
-					if(mysqli_num_rows($resultado) == 1):
+					if(pg_num_rows($resultado) == 1):
 						$erros[] = "<script>alert('O login $login já está cadastrado');</script>";
 					else:
 						if(empty($descricao)):
 							$sql = "INSERT INTO usuario (nome, email,senha,imagem) VALUES ('$nome','$login','$senha','$novoNome')";
-							$resultado = mysqli_query($connect,$sql);
+							$resultado = pg_query($connect,$sql);
 							if ($resultado):
 								$_SESSION['logado'] = true;
-								$_SESSION['id_usuario'] = mysqli_insert_id($connect);
-								mysqli_close();
+								$_SESSION['id_usuario'] = pg_last_oid($connect);
+								pg_close();
 								header('Location: home.php');
 							else:
 								"<script>alert('Não foi possível inserir as informações ao banco de dados');</script>";
 							endif;
 						else:
 							$sql = "INSERT INTO usuario (nome, email,senha,imagem,sobre) VALUES ('$nome','$login','$senha','$novoNome','$descricao')";
-							$resultado = mysqli_query($connect,$sql);
+							$resultado = pg_query($connect,$sql);
 							if ($resultado):
 								$_SESSION['logado'] = true;
-								$_SESSION['id_usuario'] = mysqli_insert_id($connect);
-								mysqli_close();
+								$_SESSION['id_usuario'] = pg_last_oid($connect);
+								pg_close();
 								header('Location: home.php');
 							endif;
 						endif;
@@ -91,7 +91,7 @@ include_once 'includes/header.php';
 				<h1 align="center"> Cadastro </h1>
 				
 				<div align="center">
-					<img id="fotopreview" class="circle" height="200px" width="200px" src="<?=$foto?>"><br>
+					<img id="fotopreview" class="circle" height="200px" width="200px" src=""><br>
 					<label> Foto de Perfil </label> <br>
 					<input id="uploadfoto" type="file" name="imagem">
 				</div>
@@ -150,5 +150,5 @@ include_once 'includes/header.php';
 		
 
 <?php
-include_once 'includes/footer.php';
+include_once 'footer.php';
 ?>
