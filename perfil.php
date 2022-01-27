@@ -120,7 +120,7 @@ endif;
 								</form>";
 							if(isset($_GET['unfollow'])):
 								
-								$sql = "DELETE FROM seguidos WHERE seguindo = $id AND seguido = $id_usuario;
+								$sql = "DELETE FROM seguidos WHERE seguindo = $id AND seguido = $id_usuario";
 								$validacao = pg_query($connect, $sql);
 								if($validacao):
 									echo "<script>alert('Você deixou de seguir esse perfil')</script>";
