@@ -46,7 +46,7 @@ endif;
 		<div class="row container z-depth-2">
 			<form class="col s12" action="<?php echo $_SERVER['PHP_SELF']."?id_usuario=$id_usuario"; ?>" method="POST" enctype="multipart/form-data">
 				<?php
-				if($resultado):
+				if($alteracoes):
 					echo "<script> alert('Alteraçõs no perfil feitas com sucesso!') </script>";
 				endif;
 				?>	
