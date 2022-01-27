@@ -1,5 +1,5 @@
 <?php
-include_once 'includes/header.php';
+include_once 'header.php';
 
 // conexao com bd;
 require_once 'bd_conectar.php';
@@ -16,9 +16,9 @@ if(!isset($_SESSION['logado'])):
 endif;
 
 $id = $_SESSION['id_usuario'];
-$sql = "SELECT * FROM usuario WHERE codusu = '$id'";
-$resultado = mysqli_query($connect, $sql);
-$dados = mysqli_fetch_assoc($resultado);
+$sql = "SELECT * FROM usuario WHERE codusu = $id";
+$resultado = pg_query($connect, $sql);
+$dados = pg_fetch_assoc($resultado);
 
 //VALIDANDO COZINHEIROS
 if(!empty($_GET['cozinheiros'])):
@@ -90,9 +90,9 @@ endif;
 			</div>";
 			
 			$sql = "SELECT * FROM seguidos WHERE seguindo = $id";
-			$resultado = mysqli_query($connect, $sql);
+			$resultado = pg_query($connect, $sql);
 			$seguir = Array();
-			while ($row = mysqli_fetch_assoc($resultado)):
+			while ($row = pg_fetch_assoc($resultado)):
 				$seguir[] = $row['seguido'];
 			endwhile;
 			
@@ -103,14 +103,14 @@ endif;
 					
 					// selecionando os dados da receita
 					$sql = "SELECT * FROM receita WHERE autor = '$idseguido'";
-					$resultado = mysqli_query($connect, $sql);
-					$dados_receita = mysqli_fetch_assoc($resultado);
+					$resultado = pg_query($connect, $sql);
+					$dados_receita = pg_fetch_assoc($resultado);
 					
 					// selecionando os dados do criador do post receita
 					$donodopost = $dados_receita['autor'];
 					$sql= "SELECT * FROM usuario WHERE codusu = '$donodopost'";
-					$resultado = mysqli_query($connect, $sql);
-					$dados_donodopost = mysqli_fetch_assoc($resultado);
+					$resultado = pg_query($connect, $sql);
+					$dados_donodopost = pg_fetch_assoc($resultado);
 					
 					// atribuindo valores para melhor escrita e entendimento
 					
@@ -176,21 +176,34 @@ endif;
 					<a href='home.php?seguidos=true' class='collection-item'>SEGUIDOS</a>
 				</div>";
 				
-				$sql = "SELECT DISTINCT autor FROM receita ORDER BY data DESC";
-				$resultado = mysqli_query($connect, $sql);
+				$sql = "SELECT DISTINCT autor FROM receita";
+				$resultado = pg_query($connect, $sql);
 				$ids = Array();
-				while ($row = mysqli_fetch_assoc($resultado)):
+				while ($row = pg_fetch_assoc($resultado)):
 					$ids[] = $row['autor'];
+				endwhile;
+
+				$n = 0;
+				$id_qntd = Array(); //relação id com qntd de receitas do id
+				while($n < count($ids)):
+					$id_donodopost = $ids[$n];
+					$sql = "SELECT COUNT(*) AS quantidade FROM receita WHERE autor = $id_donodopost";
+					$num_receita = pg_fetch_assoc(pg_query($connect, $sql));
+					$qntd_receita = $num_receita['quantidade'];
+					$id_qntd = [
+						$id_donodopost => $qntd_receita
+					];
+					$n = $n +1;
 				endwhile;
 				
 				$n = 0;
 				while($n < count($ids)):
 					$id_donodopost = $ids[$n];
 
-					if (mysqli_num_rows($resultado) > 0):
+					if (pg_num_rows($resultado) > 0):
 						$sql= "SELECT * FROM usuario WHERE codusu = '$id_donodopost'";
-						$resultado = mysqli_query($connect, $sql);
-						$dados_donodopost = mysqli_fetch_assoc($resultado);
+						$resultado = pg_query($connect, $sql);
+						$dados_donodopost = pg_fetch_assoc($resultado);
 						
 						// atribuindo valores para melhor escrita e entendimento
 						
@@ -214,15 +227,15 @@ endif;
 			
 				echo 
 				"<div id='alternarpaginas' class='container collection'>
-					<a href='http://localhost:8080/site_trabalho2/home.php?cozinheiros=false' class='collection-item active'>RECEITAS</a>
-					<a href='http://localhost:8080/site_trabalho2/home.php?cozinheiros=true' class='collection-item'>COZINHEIROS</a>
+					<a href='home.php?cozinheiros=false' class='collection-item active'>RECEITAS</a>
+					<a href='home.php?cozinheiros=true' class='collection-item'>COZINHEIROS</a>
 					<a href='home.php?seguidos=true' class='collection-item'>SEGUIDOS</a>
 				</div>";
 
 				$sql = "SELECT * FROM receita ORDER BY data DESC";
-				$resultado = mysqli_query($connect, $sql);
+				$resultado = pg_query($connect, $sql);
 				$receitas = Array();
-				while ($row = mysqli_fetch_assoc($resultado)):
+				while ($row = pg_fetch_assoc($resultado)):
 					$receitas[] = $row['codreceita'];
 				endwhile;
 				$n = 0;
@@ -231,15 +244,15 @@ endif;
 					$receita = $receitas[$n];
 					
 					// selecionando os dados da receita
-					$sql = "SELECT * FROM receita WHERE codreceita = '$receita'";
-					$resultado = mysqli_query($connect, $sql);
-					$dados_receita = mysqli_fetch_assoc($resultado);
+					$sql = "SELECT * FROM receita WHERE codreceita = $receita";
+					$resultado = pg_query($connect, $sql);
+					$dados_receita = pg_fetch_assoc($resultado);
 					
 					// selecionando os dados do criador do post receita
 					$donodopost = $dados_receita['autor'];
-					$sql= "SELECT * FROM usuario WHERE codusu = '$donodopost'";
-					$resultado = mysqli_query($connect, $sql);
-					$dados_donodopost = mysqli_fetch_assoc($resultado);
+					$sql= "SELECT * FROM usuario WHERE codusu = $donodopost";
+					$resultado = pg_query($connect, $sql);
+					$dados_donodopost = pg_fetch_assoc($resultado);
 					
 					// atribuindo valores para melhor escrita e entendimento
 					
@@ -302,13 +315,13 @@ endif;
 			$pesquisa = $_GET['pesquisa'];
 			
 			$sql = "SELECT * FROM usuario WHERE nome LIKE '%".$pesquisa."%'";
-			$resultado = mysqli_query($connect, $sql);
-			while ($row = mysqli_fetch_assoc($resultado)):
+			$resultado = pg_query($connect, $sql);
+			while ($row = pg_fetch_assoc($resultado)):
 				$usuarios[] = $row['codusu'];
 			endwhile;
 			
 			$n = 0;
-			if(mysqli_num_rows($resultado) > 0):
+			if(pg_num_rows($resultado) > 0):
 				while($n < count($usuarios)):
 					
 					$id_donodopost = $usuarios[$n];
@@ -321,8 +334,8 @@ endif;
 					endif;
 					
 					$sql = "SELECT * FROM usuario WHERE codusu = $id_donodopost";
-					$resultado = mysqli_query($connect, $sql);
-					$dados_usuarios = mysqli_fetch_assoc($resultado);
+					$resultado = pg_query($connect, $sql);
+					$dados_usuarios = pg_fetch_assoc($resultado);
 					
 					$foto_donodopost = $dados_usuarios['imagem'];
 					$nome_donodopost = $dados_usuarios['nome'];
@@ -344,26 +357,26 @@ endif;
 		else:
 		
 			$pesquisa = $_GET['pesquisa'];
-			$resultado = mysqli_query($connect,"SELECT codreceita FROM receita WHERE nomerec lLIKE '%".$pesquisa."%' ORDER BY data");
-			while ($row = mysqli_fetch_assoc($resultado)):
+			$resultado = pg_query($connect,"SELECT codreceita FROM receita WHERE nomerec lLIKE '%".$pesquisa."%' ORDER BY data");
+			while ($row = pg_fetch_assoc($resultado)):
 				$receitas[] = $row['codreceita'];	
 			endwhile;
 			$n = 0;
 			
-			if(mysqli_num_rows($resultado)>0):
+			if(pg_num_rows($resultado)>0):
 				while($n < count($receitas)):
 					$receita = $receitas[$n];
 
 					// selecionando os dados da receita
 					$sql = "SELECT * FROM receita WHERE codreceita = '$receita'";
-					$resultado = mysqli_query($connect, $sql);
-					$dados_receita = mysqli_fetch_assoc($resultado);
+					$resultado = pg_query($connect, $sql);
+					$dados_receita = pg_fetch_assoc($resultado);
 
 					// selecionando os dados do criador do post receita
 					$donodopost = $dados_receita['autor'];
 					$sql= "SELECT * FROM usuario WHERE codusu = '$donodopost'";
-					$resultado = mysqli_query($connect, $sql);
-					$dados_donodopost = mysqli_fetch_assoc($resultado);
+					$resultado = pg_query($connect, $sql);
+					$dados_donodopost = pg_fetch_assoc($resultado);
 
 					// atribuindo valores para melhor escrita e entendimento
 
@@ -428,5 +441,5 @@ endif;
 
 
 <?php
-include_once 'includes/footer.php';
+include_once 'footer.php';
 ?>
