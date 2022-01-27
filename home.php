@@ -39,7 +39,7 @@ endif;
     <div class="nav-wrapper container"><a id="logo-container" href="home.php" class="brand-logo left">ComeCome</a>
       <ul class="right">
         <li><a href="post.php" class="btn-floating #f57f17 yellow darken-4"> <i class= "material-icons"> add_circle </i> </a> </li>
-		<li><a href="perfil.php?id_usuario=<?php $meuperfil = true; echo $id.'&meuperfil='.$meuperfil;?>" class="btn-floating"> <img class="circle z-depth-2" height='50px' width='50px' src="fotosperfil/<?php echo $dados['imagem']; ?>"> </a> </li>
+		<li><a href="perfil.php?id_usuario=<?php $meuperfil = true; echo $id.'&meuperfil='.$meuperfil;?>" class="btn-floating"> <img class="circle z-depth-2" height='50px' width='50px' src="<?php echo $dados['imagem']; ?>"> </a> </li>
 		<li><a href="logout.php" class="btn-floating #f57f17 yellow darken-4"> <i class= "material-icons"> stop </i> </a> </li>
       </ul>
     </div>
@@ -138,7 +138,7 @@ endif;
 								<div name='perfil'>
 									<table>
 									<tr id='perfil'>
-										<td> <a href='perfil.php?id_usuario=$id_donodopost&meuperfil=$meuperfil'><img alt='Foto de Perfil' class='circle' height='90px' width='90px' src='fotosperfil/$foto_donodopost'> </a></td>
+										<td> <a href='perfil.php?id_usuario=$id_donodopost&meuperfil=$meuperfil'><img alt='Foto de Perfil' class='circle' height='90px' width='90px' src='$foto_donodopost'> </a></td>
 										<td> $nome_donodopost </td>
 									</tr>
 									</table>
@@ -147,7 +147,7 @@ endif;
 								<div>
 								  <div class='card medium' id='post'>
 									<div class='card-image'>
-									  <img class='responsive-img postshome' alt='$nome_receita' src='arquivos/$imagem'>
+									  <img class='responsive-img postshome' alt='$nome_receita' src='$imagem'>
 									  <span class='card-title'>$nome_receita</span>
 									</div>
 									<div class='card-content'>
@@ -214,7 +214,7 @@ endif;
 						
 						echo "<div class='cozinheiros'>
 								<div name='perfil'>
-									<td> <a href='perfil.php?id_usuario=$id_donodopost&meuperfil=$meuperfil'><img alt='Foto de Perfil' class='circle' height='120px' width='120px' src='fotosperfil/$foto_donodopost'> </a></td>
+									<td> <a href='perfil.php?id_usuario=$id_donodopost&meuperfil=$meuperfil'><img alt='Foto de Perfil' class='circle' height='120px' width='120px' src='$foto_donodopost'> </a></td>
 									<br> <td> $nome_donodopost </td>
 								</div>
 							</div>";
@@ -280,7 +280,7 @@ endif;
 								<div name='perfil'>
 									<table>
 									<tr id='perfil'>
-										<td> <a href='perfil.php?id_usuario=$id_donodopost&meuperfil=$meuperfil'><img alt='Foto de Perfil' class='circle' height='90px' width='90px' src='fotosperfil/$foto_donodopost'> </a></td>
+										<td> <a href='perfil.php?id_usuario=$id_donodopost&meuperfil=$meuperfil'><img alt='Foto de Perfil' class='circle' height='90px' width='90px' src='$foto_donodopost'> </a></td>
 										<td> $nome_donodopost </td>
 									</tr>
 									</table>
@@ -289,7 +289,7 @@ endif;
 								<div>
 								  <div class='card medium' id='post'>
 									<div class='card-image'>
-									  <img class='responsive-img postshome' alt='$nome_receita' src='arquivos/$imagem'>
+									  <img class='responsive-img postshome' alt='$nome_receita' src='$imagem'>
 									  <span class='card-title'>$nome_receita</span>
 									</div>
 									<div class='card-content'>
@@ -342,7 +342,7 @@ endif;
 					
 					echo "<div class='row container'>
 							<div name='perfil' class='col s6 offset-s5'>
-								<td> <a href='perfil.php?id_usuario=$id_donodopost&meuperfil=$meuperfil'><img alt='Foto de Perfil' class='circle' height='120px' width='120px' src='fotosperfil/$foto_donodopost'> </a></td>
+								<td> <a href='perfil.php?id_usuario=$id_donodopost&meuperfil=$meuperfil'><img alt='Foto de Perfil' class='circle' height='120px' width='120px' src='$foto_donodopost'> </a></td>
 								<td> $nome_donodopost </td>
 							</div>
 					  </div>";
@@ -404,7 +404,7 @@ endif;
 								<div name='perfil'>
 									<table>
 									<tr id='perfil'>
-										<td> <a href='perfil.php?id_usuario=$id_donodopost&meuperfil=$meuperfil'><img alt='Foto de Perfil' class='circle' height='90px' width='90px' src='fotosperfil/$foto_donodopost'> </a></td>
+										<td> <a href='perfil.php?id_usuario=$id_donodopost&meuperfil=$meuperfil'><img alt='Foto de Perfil' class='circle' height='90px' width='90px' src='$foto_donodopost'> </a></td>
 										<td> $nome_donodopost </td>
 									</tr>
 									</table>
@@ -413,7 +413,7 @@ endif;
 								<div>
 								  <div class='card medium' id='post'>
 									<div class='card-image'>
-									  <img class='responsive-img postshome' alt='$nome_receita' src='arquivos/$imagem'>
+									  <img class='responsive-img postshome' alt='$nome_receita' src='$imagem'>
 									  <span class='card-title'>$nome_receita</span>
 									</div>
 									<div class='card-content'>
