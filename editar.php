@@ -31,7 +31,7 @@ endif;
 		<nav class="#fbc02d yellow darken-2" role="navigation">
 		<div class="nav-wrapper container"><a id="logo-container" href="home.php" class="brand-logo left">ComeCome</a>
 		  <ul class="right">
-			<li><a href="perfil.php?id_usuario=<?php $meuperfil = true; echo $id.'&meuperfil='.$meuperfil;?>" class="btn-floating"> <img class="circle z-depth-2" height='50px' width='50px' src="fotosperfil/<?php echo $dados['imagem']; ?>"> </a> </li>
+			<li><a href="perfil.php?id_usuario=<?php $meuperfil = true; echo $id.'&meuperfil='.$meuperfil;?>" class="btn-floating"> <img class="circle z-depth-2" height='50px' width='50px' src="<?php echo $dados['imagem']; ?>"> </a> </li>
 			<li><a href="logout.php" class="btn-floating #f57f17 yellow darken-4"> <i class= "material-icons"> stop </i> </a> </li>
 		  </ul>
 		</div>
@@ -41,12 +41,12 @@ endif;
 	<main>
 		<div class="row container z-depth-2">
 			<form class="col s12" action="<?php echo $_SERVER['PHP_SELF']."?id_receita=$id_receita"; ?>" method="POST" enctype="multipart/form-data">
-				<h1 align="center"> Edita </h1>
+				<h1 align="center"> Editar </h1>
 				
 				<div align="center">
-					<img id="fotopreview" class="post" src="arquivos/<?php $imagem = $dados_receita['imagem']; echo $imagem; ?>"><br>
+					<img id="fotopreview" class="post" src="<?php $imagem = $dados_receita['imagem']; echo $imagem; ?>"><br>
 					<label> Foto da Receita </label> <br>
-					<input id="uploadfoto" type="file" name="imagem" value="arquivos/<?php $imagem = $dados_receita['imagem']; echo $imagem; ?>">
+					<input id="uploadfoto" type="file" name="imagem" value="<?php $imagem = $dados_receita['imagem']; echo $imagem; ?>">
 				</div>
 				
 				<script>
@@ -106,52 +106,43 @@ endif;
 						$extensao = pathinfo($_FILES['imagem']['name'],PATHINFO_EXTENSION);
 
 						if(in_array($extensao, $formatosPermitidos)):
-							$pasta = "arquivos/"; // criando o caminho para fazer o upload do arqv
-							$temporario = $_FILES['imagem']['tmp_name']; //selecionando o nome temporario do arqv;
-							$novoNome = uniqid().'.'.$extensao; //transformando o nome do arqv em um nome unico; organização
+							$imagembase64 = base64_encode(file_get_contents($_FILES['imagem']['tmp_name'])); //selecionando o nome temporario do arqv;
+							$imagem = 'data:imagem/'.$extensao.';base64,'.$imagembase64;
+							$nome =  filter_input(INPUT_POST,'nome_receita',FILTER_SANITIZE_SPECIAL_CHARS);
+							$desc = filter_input(INPUT_POST,'descricao',FILTER_SANITIZE_SPECIAL_CHARS);
+							$preparo = filter_input(INPUT_POST,'preparo',FILTER_SANITIZE_SPECIAL_CHARS);
+							$ingredientes = "";
 							
-							if(move_uploaded_file($temporario, $pasta.$novoNome)): /*retorna true caso o arqv temporario consiga
-							ir para o destino; altera o nome do arquivo*/
+							$n=1;
 							
-								$nome =  filter_input(INPUT_POST,'nome_receita',FILTER_SANITIZE_SPECIAL_CHARS);
-								$desc = filter_input(INPUT_POST,'descricao',FILTER_SANITIZE_SPECIAL_CHARS);
-								$preparo = filter_input(INPUT_POST,'preparo',FILTER_SANITIZE_SPECIAL_CHARS);
-								$ingredientes = "";
+							if(!empty($_POST['ingrediente1'])):
+								$ingredientes = "<ul>";
 								
-								$n=1;
-								
-								if(!empty($_POST['ingrediente1'])):
-									$ingredientes = "<ul>";
-									
-									while(!empty($_POST['ingrediente'.$n])):
-										$ingrediente = $_POST["ingrediente".$n];
-										$ingredientes = $ingredientes."<li> $ingrediente </li>";
-										$n = $n + 1;
-									endwhile;
-									$ingredientes = $ingredientes."</ul>";
-									
-								endif;
-
-								$n=0;
-								$valores = [$nome,$preparo,$novoNome,$desc,$ingredientes];
-								$colunasEditaveis = ['nomerec','preparo','imagem','sobre','ingrediente'];
-								while($n<5):
-									if(!empty($valores[$n])):
-										$sql = "UPDATE receita SET $colunasEditaveis[$n] = '$valores[$n]' WHERE codreceita = '$id_receita'";
-										$resultado = pg_query($connect,$sql);
-									endif;
+								while(!empty($_POST['ingrediente'.$n])):
+									$ingrediente = $_POST["ingrediente".$n];
+									$ingredientes = $ingredientes."<li> $ingrediente </li>";
 									$n = $n + 1;
-									
 								endwhile;
-								header("Location: receita.php?id_receita=$id_receita");
-								pg_close($connect);
+								$ingredientes = $ingredientes."</ul>";
 								
-							else:
-								$erros[] = "<script>alert('Erro, não foi possível fazer o upload');</script>";
 							endif;
 
+							$n=0;
+							$valores = [$nome,$preparo,$novoNome,$desc,$ingredientes];
+							$colunasEditaveis = ['nomerec','preparo','imagem','sobre','ingrediente'];
+							while($n<5):
+								if(!empty($valores[$n])):
+									$sql = "UPDATE receita SET $colunasEditaveis[$n] = '$valores[$n]' WHERE codreceita = '$id_receita'";
+									$resultado = pg_query($connect,$sql);
+								endif;
+								$n = $n + 1;
+								
+							endwhile;
+							header("Location: receita.php?id_receita=$id_receita");
+							pg_close($connect);
+
 						else:
-							$erros[] = "<script>alert('Imagem com formato não suportado ou vazia');</script>";
+							$erros[] = "<script>alert('Imagem com formato não suportado');</script>";
 						endif;
 						
 						if(!empty($erros)):
@@ -159,12 +150,6 @@ endif;
 							foreach($erros as $erro):
 								echo $erro;
 							endforeach;
-							
-							if(!empty($pasta) or !empty($novoNome)):
-								if(is_file($pasta.$novoNome)):
-									$deletar = unlink($pasta.$novoNome);
-								endif;
-							endif;
 							
 						endif;
 						
