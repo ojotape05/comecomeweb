@@ -45,7 +45,12 @@ endif;
 	<main>
 		<div class="row container z-depth-2">
 			<form class="col s12" action="<?php echo $_SERVER['PHP_SELF']."?id_usuario=$id_usuario"; ?>" method="POST" enctype="multipart/form-data">
-				<h1 align="center"> Editar </h1>
+				<?php
+				if($resultado):
+					echo "<script> alert('Alteraçõs no perfil feitas com sucesso!') </script>";
+				endif;
+				?>	
+				<h1 align="center"> Editar perfil </h1>
 				
 				<div align="center">
 					<img id="fotopreview" class="circle" height="200px" width="200px" src="<?php echo $dados['imagem']; ?>"><br>
