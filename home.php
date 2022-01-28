@@ -314,7 +314,7 @@ endif;
 
 			$pesquisa = $_GET['pesquisa'];
 			
-			$sql = "SELECT * FROM usuario WHERE nome LIKE '%".$pesquisa."%'";
+			$sql = "SELECT * FROM usuario WHERE nome ILIKE '%".$pesquisa."%'";
 			$resultado = pg_query($connect, $sql);
 			while ($row = pg_fetch_assoc($resultado)):
 				$usuarios[] = $row['codusu'];
@@ -357,7 +357,7 @@ endif;
 		else:
 		
 			$pesquisa = $_GET['pesquisa'];
-			$resultado = pg_query($connect,"SELECT codreceita FROM receita WHERE nomerec lLIKE '%".$pesquisa."%' ORDER BY data");
+			$resultado = pg_query($connect,"SELECT codreceita FROM receita WHERE nomerec ILIKE '%".$pesquisa."%' ORDER BY data");
 			while ($row = pg_fetch_assoc($resultado)):
 				$receitas[] = $row['codreceita'];	
 			endwhile;
