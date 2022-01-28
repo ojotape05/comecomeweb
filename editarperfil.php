@@ -119,7 +119,7 @@ endif;
 							$imagembase64 = base64_encode(file_get_contents($_FILES['imagem']['tmp_name'])); //selecionando o nome temporario do arqv;
 							$imagem = 'data:imagem/'.$extensao.';base64,'.$imagembase64;
 							$nome =  filter_input(INPUT_POST,'nome',FILTER_SANITIZE_SPECIAL_CHARS);
-							$login - filter_input(INPUT_POST,'login',FILTER_SANITIZE_SPECIAL_CHARS);
+							$login = filter_input(INPUT_POST,'login',FILTER_SANITIZE_SPECIAL_CHARS);
 							$desc = filter_input(INPUT_POST,'descricao',FILTER_SANITIZE_SPECIAL_CHARS);
 
 							if(!empty($_POST['senha'])):
@@ -180,7 +180,7 @@ endif;
 						
 					else:
 						$nome =  filter_input(INPUT_POST,'nome',FILTER_SANITIZE_SPECIAL_CHARS);
-						$login - filter_input(INPUT_POST,'login',FILTER_SANITIZE_SPECIAL_CHARS);
+						$login = filter_input(INPUT_POST,'login',FILTER_SANITIZE_SPECIAL_CHARS);
 						$desc = filter_input(INPUT_POST,'descricao',FILTER_SANITIZE_SPECIAL_CHARS);
 						
 						if(!empty($_POST['senha'])):
