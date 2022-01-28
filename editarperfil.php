@@ -123,10 +123,13 @@ endif;
 							$desc = filter_input(INPUT_POST,'descricao',FILTER_SANITIZE_SPECIAL_CHARS);
 
 							if(!empty($_POST['senha'])):
-								$senha = pg_escape_string($connect, md5($_POST['senha']));
-								$sql = "SELECT * FROM usuario WHERE senha = $senha";
+								$senha = pg_escape_string($connect, $_POST['senha']);
+								$sql = "SELECT senha FROM usuario WHERE codusu=$id_usuario";
 								$resultado = pg_query($connect,$sql);
-								if(pg_num_rows($resultado) == 1):
+								$senha_verificar = pg_fetch_assoc($resultado);
+								$senha_verificar = $senha_verificar['senha'];
+								
+								if($senha_verificar == md5($senha)):
 									$senha_nova = pg_escape_string($connect, md5($_POST['senha_nova']));
 									$n=0;
 									$valores = [$nome,$senha_nova,$imagem,$desc,$login];
@@ -184,10 +187,13 @@ endif;
 						$desc = filter_input(INPUT_POST,'descricao',FILTER_SANITIZE_SPECIAL_CHARS);
 						
 						if(!empty($_POST['senha'])):
-							$senha = pg_escape_string($connect, md5($_POST['senha']));
-							$sql = "SELECT * FROM usuario WHERE senha = $senha";
+							$senha = pg_escape_string($connect, $_POST['senha']);
+							$sql = "SELECT senha FROM usuario WHERE codusu=$id_usuario";
 							$resultado = pg_query($connect,$sql);
-							if(pg_num_rows($resultado) == 1):
+							$senha_verificar = pg_fetch_assoc($resultado);
+							$senha_verificar = $senha_verificar['senha'];
+							
+							if($senha_verificar == md5($senha)):
 								$senha_nova = pg_escape_string($connect, md5($_POST['senha_nova']));
 								$n=0;
 								$valores = [$nome,$senha_nova,$desc,$login];
