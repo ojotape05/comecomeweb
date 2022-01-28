@@ -44,12 +44,7 @@ endif;
 	
 	<main>
 		<div class="row container z-depth-2">
-			<form class="col s12" action="<?php echo $_SERVER['PHP_SELF']."?id_usuario=$id_usuario"; ?>" method="POST" enctype="multipart/form-data">
-				<?php
-				if($alteracoes):
-					echo "<script> alert('Alteraçõs no perfil feitas com sucesso!') </script>";
-				endif;
-				?>	
+			<form class="col s12" action="<?php echo $_SERVER['PHP_SELF']."?id_usuario=$id_usuario"; ?>" method="POST" enctype="multipart/form-data">	
 				<h1 align="center"> Editar perfil </h1>
 				
 				<div align="center">
@@ -158,6 +153,16 @@ endif;
 								endwhile;
 							endif;
 							
+							if($alteracoes):
+								echo "<script>
+								alert('Alteraçõs no perfil feitas com sucesso!')
+								window.location.href = 'perfil.php?id_usuario=$id_usuario&meuperfil=1';
+								</script>";
+							else:
+								echo "<script>
+								alert('Erro ao fazer as alterações');
+								</script>";
+							endif;
 							pg_close($connect);
 
 						else:
@@ -206,6 +211,17 @@ endif;
 								endif;
 								$n = $n + 1;
 							endwhile;
+						endif;
+			
+						if($alteracoes):
+							echo "<script>
+							alert('Alteraçõs no perfil feitas com sucesso!')
+							window.location.href = 'perfil.php?id_usuario=$id_usuario&meuperfil=1';
+							</script>";
+						else:
+							echo "<script>
+							alert('Erro ao fazer as alterações');
+							</script>";
 						endif;
 						pg_close($connect);
 					endif;
