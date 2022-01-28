@@ -110,10 +110,10 @@ endif;
 		</form>
 			<?php
 				if(isset($_POST['enviar'])):
-					if(!empty($_FILES['imagem']['name'])):
+					if(!empty($_FILES['imagem']['tmp_name'])):
 						$erros = Array();
 						$formatosPermitidos = array("png", "jpeg", "jpg", "PNG", "JPEG", "JPG");
-						$extensao = pathinfo($_FILES['imagem']['name'],PATHINFO_EXTENSION);
+						$extensao = pathinfo($_FILES['imagem']['tmp_name'],PATHINFO_EXTENSION);
 
 						if(in_array($extensao, $formatosPermitidos)):
 							$imagembase64 = base64_encode(file_get_contents($_FILES['imagem']['tmp_name'])); //selecionando o nome temporario do arqv;
