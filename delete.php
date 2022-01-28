@@ -14,8 +14,8 @@
 	
 	if(!empty($_GET['id_receita'])):
 		$id_receita = $_GET['id_receita'];
-		$sql = "DELETE FROM receita WHERE codreceita = '$id_receita'";
-		$resultado = pg_query($connect,$sql);
+		pg_query($connect,"DELETE FROM receita WHERE codreceita = '$id_receita'");
+		pg_query($connect,"DELETE FROM favorito WHERE codreceita = '$id_receita'");
 		
 		pg_close($connect);
 	else:
