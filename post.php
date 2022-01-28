@@ -1,8 +1,5 @@
 <?php
 include_once 'header.php';
-?>
-
-<?php
 
 // iniciar sessão
 session_start();
@@ -102,17 +99,19 @@ $dados = pg_fetch_assoc($resultado);
 					if(in_array($extensao, $formatosPermitidos)):
 						$imagembase64 = base64_encode(file_get_contents($_FILES['imagem']['tmp_name'])); //selecionando o nome temporario do arqv;
 						$imagem = 'data:imagem/'.$extensao.';base64,'.$imagembase64;					
-						$ingredientes = "<ul>";
+						$ingredientes = "";
 						$nome =  filter_input(INPUT_POST,'nome_receita',FILTER_SANITIZE_SPECIAL_CHARS);
 						$desc = filter_input(INPUT_POST,'descricao',FILTER_SANITIZE_SPECIAL_CHARS);
 						$preparo = filter_input(INPUT_POST,'preparo',FILTER_SANITIZE_SPECIAL_CHARS);
+						
 						$n=1;
 						while(!empty($_POST['ingrediente'.$n])):
 							$ingrediente = $_POST["ingrediente".$n];
-							$ingredientes = $ingredientes."<li> $ingrediente </li>";
+							$ingredientes = $ingredientes." 
+							$ingrediente ";
 							$n = $n + 1;
 						endwhile;
-						$ingredientes = $ingredientes."</ul>";
+
 						if (empty($nome) or empty($preparo) or empty($ingredientes) or empty($desc)):
 							$erros[] = "<script>alert('Todos os campos precisam ser preenchidos');</script>";
 						else:
@@ -158,9 +157,6 @@ $dados = pg_fetch_assoc($resultado);
 				}
 			</script>
 	</main>
-	
-
-
 
 <?php
 include_once 'footer.php';
