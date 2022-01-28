@@ -138,7 +138,10 @@ endif;
 								$n = $n + 1;
 								
 							endwhile;
-							header("Location: receita.php?id_receita=$id_receita");
+							echo "<script>
+							alert('Receita foi alterada com sucesso!');
+							window.location.href = 'receita.php?id_receita=$id_receita';
+							</script>";
 							pg_close($connect);
 
 						else:
@@ -185,7 +188,10 @@ endif;
 							endif;
 							$n = $n +1;
 						endwhile;
-						header("Location: receita.php?id_receita=$id_receita");
+						echo "<script>
+							alert('Receita foi alterada com sucesso!');
+							window.location.href = 'receita.php?id_receita=$id_receita';
+							</script>";
 						pg_close($connect);
 					endif;
 				endif;
