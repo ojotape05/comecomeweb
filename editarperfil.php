@@ -76,7 +76,7 @@ endif;
 				
 				<div class="row">
 					<div class="input-field col s6 offset-s3">
-						<input placeholder="<?php echo $dados_usuario['nome']?>" name="nome_usuario" type="text" class="validate">
+						<input placeholder="<?php echo $dados_usuario['nome']?>" name="nome" type="text" class="validate">
 					</div>
 				</div>
 				
@@ -130,7 +130,7 @@ endif;
 									$senha_nova = pg_escape_string($connect, md5($_POST['senha_nova']));
 									$n=0;
 									$valores = [$nome,$senha_nova,$imagem,$desc,$login];
-									$colunasEditaveis = ['nomerec','senha','imagem','sobre','email'];
+									$colunasEditaveis = ['nome','senha','imagem','sobre','email'];
 									while($n<5):
 										if(!empty($valores[$n])):
 											$sql = "UPDATE usuario SET $colunasEditaveis[$n] = '$valores[$n]' WHERE codusu = '$id_usuario'";
@@ -144,7 +144,7 @@ endif;
 							else:
 								$n=0;
 								$valores = [$nome,$imagem,$desc,$login];
-								$colunasEditaveis = ['nomerec','imagem','sobre','email'];
+								$colunasEditaveis = ['nome','imagem','sobre','email'];
 								while($n<4):
 									if(!empty($valores[$n])):
 										$sql = "UPDATE usuario SET $colunasEditaveis[$n] = '$valores[$n]' WHERE codusu = '$id_usuario'";
@@ -191,7 +191,7 @@ endif;
 								$senha_nova = pg_escape_string($connect, md5($_POST['senha_nova']));
 								$n=0;
 								$valores = [$nome,$senha_nova,$desc,$login];
-								$colunasEditaveis = ['nomerec','senha','sobre','email'];
+								$colunasEditaveis = ['nome','senha','sobre','email'];
 								while($n<4):
 									if(!empty($valores[$n])):
 										$sql = "UPDATE usuario SET $colunasEditaveis[$n] = '$valores[$n]' WHERE codusu = '$id_usuario'";
@@ -205,7 +205,7 @@ endif;
 						else:
 							$n=0;
 							$valores = [$nome,$desc,$login];
-							$colunasEditaveis = ['nomerec','sobre','email'];
+							$colunasEditaveis = ['nome','sobre','email'];
 							while($n<3):
 								if(!empty($valores[$n])):
 									$sql = "UPDATE usuario SET $colunasEditaveis[$n] = '$valores[$n]' WHERE codusu = '$id_usuario'";
