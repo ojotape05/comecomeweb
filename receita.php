@@ -1,8 +1,5 @@
 <?php
 include_once 'header.php';
-?>
-
-<?php
 
 // iniciar sessão
 session_start();
@@ -42,7 +39,7 @@ endif;
 		<div class="nav-wrapper container"><a id="logo-container" href="home.php" class="brand-logo left">ComeCome</a>
 		  <ul class="right">
 			<li><a href="post.php" class="btn-floating #f57f17 yellow darken-4"> <i class= "material-icons"> add_circle </i> </a> </li>
-			<li><a href="perfil.php?id_usuario=<?php $meuperfil = true; echo $id_usuario.'&meuperfil='.$meuperfil;?>" class="btn-floating"> <img class="circle z-depth-2" height="40px" width="40px" src="<?php echo $dados['imagem']; ?>"> </a> </li>
+			<li><a href="perfil.php?id_usuario=<?php $meuperfil = true; echo $id_usuario.'&meuperfil='.$meuperfil;?>" class="btn-floating"> <img class="circle z-depth-2" height='50px' width='50px' src="<?php echo $dados['imagem']; ?>"> </a> </li>
 			<li><a href="logout.php" class="btn-floating #f57f17 yellow darken-4"> <i class= "material-icons"> stop </i> </a> </li>
 		  </ul>
 		</div>
@@ -105,7 +102,12 @@ endif;
 				<div class='card-content'>
 					<div class="divider"></div>
 					<div class="section">
-						<h5>Ingredientes:<br></h5><p><?php echo $dados_receita['ingrediente']; ?></p>
+						<h5>Ingredientes:<br></h5><p>
+						<?php
+						$ingrediente = $dados_receita['ingrediente'];
+						$ingrediente = str_replace("\r","<br>",$ingrediente);
+						echo $ingrediente;
+						?></p>
 					</div>
 				</div>
 				<div class='card-content'>
