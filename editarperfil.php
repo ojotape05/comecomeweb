@@ -119,6 +119,7 @@ endif;
 							$imagembase64 = base64_encode(file_get_contents($_FILES['imagem']['tmp_name'])); //selecionando o nome temporario do arqv;
 							$imagem = 'data:imagem/'.$extensao.';base64,'.$imagembase64;
 							$nome =  filter_input(INPUT_POST,'nome',FILTER_SANITIZE_SPECIAL_CHARS);
+							$login - filter_input(INPUT_POST,'login',FILTER_SANITIZE_SPECIAL_CHARS);
 							$desc = filter_input(INPUT_POST,'descricao',FILTER_SANITIZE_SPECIAL_CHARS);
 
 							if(!empty($_POST['senha'])):
@@ -128,9 +129,9 @@ endif;
 								if(pg_num_rows($resultado) == 1):
 									$senha_nova = pg_escape_string($connect, md5($_POST['senha_nova']));
 									$n=0;
-									$valores = [$nome,$senha_nova,$imagem,$desc];
-									$colunasEditaveis = ['nomerec','senha','imagem','sobre'];
-									while($n<4):
+									$valores = [$nome,$senha_nova,$imagem,$desc,$login];
+									$colunasEditaveis = ['nomerec','senha','imagem','sobre','email'];
+									while($n<5):
 										if(!empty($valores[$n])):
 											$sql = "UPDATE usuario SET $colunasEditaveis[$n] = '$valores[$n]' WHERE codusu = '$id_usuario'";
 											$alteracoes = pg_query($connect,$sql);
@@ -142,9 +143,9 @@ endif;
 								endif;	
 							else:
 								$n=0;
-								$valores = [$nome,$imagem,$desc];
-								$colunasEditaveis = ['nomerec','imagem','sobre'];
-								while($n<3):
+								$valores = [$nome,$imagem,$desc,$login];
+								$colunasEditaveis = ['nomerec','imagem','sobre','email'];
+								while($n<4):
 									if(!empty($valores[$n])):
 										$sql = "UPDATE usuario SET $colunasEditaveis[$n] = '$valores[$n]' WHERE codusu = '$id_usuario'";
 										$alteracoes = pg_query($connect,$sql);
@@ -179,6 +180,7 @@ endif;
 						
 					else:
 						$nome =  filter_input(INPUT_POST,'nome',FILTER_SANITIZE_SPECIAL_CHARS);
+						$login - filter_input(INPUT_POST,'login',FILTER_SANITIZE_SPECIAL_CHARS);
 						$desc = filter_input(INPUT_POST,'descricao',FILTER_SANITIZE_SPECIAL_CHARS);
 						
 						if(!empty($_POST['senha'])):
@@ -188,9 +190,9 @@ endif;
 							if(pg_num_rows($resultado) == 1):
 								$senha_nova = pg_escape_string($connect, md5($_POST['senha_nova']));
 								$n=0;
-								$valores = [$nome,$senha_nova,$desc];
-								$colunasEditaveis = ['nomerec','senha','sobre'];
-								while($n<3):
+								$valores = [$nome,$senha_nova,$desc,$login];
+								$colunasEditaveis = ['nomerec','senha','sobre','email'];
+								while($n<4):
 									if(!empty($valores[$n])):
 										$sql = "UPDATE usuario SET $colunasEditaveis[$n] = '$valores[$n]' WHERE codusu = '$id_usuario'";
 										$alteracoes = pg_query($connect,$sql);
@@ -202,9 +204,9 @@ endif;
 							endif;	
 						else:
 							$n=0;
-							$valores = [$nome,$desc];
-							$colunasEditaveis = ['nomerec','sobre'];
-							while($n<2):
+							$valores = [$nome,$desc,$login];
+							$colunasEditaveis = ['nomerec','sobre','email'];
+							while($n<3):
 								if(!empty($valores[$n])):
 									$sql = "UPDATE usuario SET $colunasEditaveis[$n] = '$valores[$n]' WHERE codusu = '$id_usuario'";
 									$alteracoes = pg_query($connect,$sql);
