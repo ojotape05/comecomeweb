@@ -16,6 +16,9 @@
 		$id_usuario = $_GET['id_usuario'];
 		if($id_usuario == $id):
 			pg_query($connect,"DELETE FROM usuario WHERE codusu = '$id_usuario'");
+			pg_query($connect,"DELETE FROM receita WHERE autor = '$id_usuario'");
+			pg_query($connect,"DELETE FROM favoritos WHERE codusu = '$id_usuario'");
+			pg_query($connect,"DELETE FROM seguidos WHERE seguindo = '$id_usuario' OR seguido = '$id_usuario'");
 		else:
 			header("Location: home.php");
 		endif;
