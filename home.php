@@ -199,6 +199,13 @@ endif;
 				$n = 0;
 				while($n < count($ids)):
 					$id_donodopost = $ids[$n];
+		
+					//verificando se id_donodopost == id_usuario: (para colocar no link da foto de perfil)
+					if($id_donodopost != $id):
+						$meuperfil = false;
+					else:
+						$meuperfil = true;
+					endif;
 
 					if (pg_num_rows($resultado) > 0):
 						$sql= "SELECT * FROM usuario WHERE codusu = '$id_donodopost'";
