@@ -108,7 +108,10 @@ endif;
 								$sql = "INSERT INTO seguidos(seguindo, seguido) values ('$id','$id_usuario')";
 								$validacao = pg_query($connect, $sql);
 								if($validacao):
-									echo "<script>alert('Você agora segue esse perfil')</script>";
+									echo "<script>
+									alert('Você agora segue esse perfil')
+									window.location.reload();
+									</script>";
 								endif;
 							endif;
 						else:
@@ -123,7 +126,10 @@ endif;
 								$sql = "DELETE FROM seguidos WHERE seguindo = $id AND seguido = $id_usuario";
 								$validacao = pg_query($connect, $sql);
 								if($validacao):
-									echo "<script>alert('Você deixou de seguir esse perfil')</script>";
+									echo "<script>
+									alert('Você deixou de seguir esse perfil')
+									window.location.reload();
+									</script>";
 								endif;
 							endif;
 						endif;
