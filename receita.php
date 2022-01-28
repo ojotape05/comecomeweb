@@ -96,7 +96,7 @@ endif;
 				<div class='card-content'>
 					<div class="divider"></div>
 					<div class="section">
-						<h5>Descrição:<br></h5><p><?php echo $dados_receita['sobre']; ?></p>
+						<h5>Descrição:<br></h5><p><?php echo $dados_receita['sobre'];?></p>
 					</div>
 				</div>
 				<div class='card-content'>
@@ -113,7 +113,11 @@ endif;
 				<div class='card-content'>
 					<div class="divider"></div>
 					<div class="section">
-						<h5>Modo de preparo:</h5><br><p><?php echo $dados_receita['preparo']; ?></p>
+						<h5>Modo de preparo:</h5><br><p>
+						<?php
+						$preparo = $dados_receita['preparo'];
+						$preparo = str_replace("&#13;&#10;","<br>",$preparo);
+						echo $preparo; ?></p>
 					</div>
 				</div>
 			  </div>
