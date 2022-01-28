@@ -121,7 +121,7 @@ $dados = pg_fetch_assoc($resultado);
 							$postagem = pg_query($connect,$sql);
 							if ($postagem):
 								$_SESSION['post'] = true; 
-								$insert_row = pg_fetch_row($resultado);
+								$insert_row = pg_fetch_row($postagem);
 								$lastid = $insert_row[0];
 								$_SESSION['id_receita'] = $lastid;
 								echo "<script>
